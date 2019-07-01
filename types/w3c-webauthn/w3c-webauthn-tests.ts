@@ -1,5 +1,4 @@
 function example5() {
-    window.PublicKeyCredential.
     const assertionPromise = navigator.credentials.get({
         publicKey: {
             challenge: new Uint8Array([4, 99, 22]),
