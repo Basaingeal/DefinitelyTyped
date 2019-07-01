@@ -7,18 +7,16 @@
 
 // Spec: https://w3c.github.io/webauthn/
 
-
 interface Window {
-    readonly Credential: typeof Credential
-    readonly PublicKeyCredential: typeof PublicKeyCredential
-    readonly CredentialsContainer: typeof CredentialsContainer
-    readonly AuthenticatorResponse: typeof AuthenticatorResponse
-    readonly AuthenticatorAttestationResponse: typeof AuthenticatorAttestationResponse
-    readonly AuthenticatorAssertionResponse: typeof AuthenticatorAssertionResponse
-    readonly PasswordCredential: typeof PasswordCredential
-    readonly FederatedCredential: typeof FederatedCredential
+    readonly Credential: typeof Credential;
+    readonly PublicKeyCredential: typeof PublicKeyCredential;
+    readonly CredentialsContainer: typeof CredentialsContainer;
+    readonly AuthenticatorResponse: typeof AuthenticatorResponse;
+    readonly AuthenticatorAttestationResponse: typeof AuthenticatorAttestationResponse;
+    readonly AuthenticatorAssertionResponse: typeof AuthenticatorAssertionResponse;
+    readonly PasswordCredential: typeof PasswordCredential;
+    readonly FederatedCredential: typeof FederatedCredential;
 }
-
 
 interface Navigator {
     readonly credentials: CredentialsContainer;
@@ -84,8 +82,8 @@ declare class PasswordCredential extends Credential implements CredentialUserDat
     readonly password: string;
     readonly name: string;
     readonly iconURL: string;
-    constructor (data: PasswordCredentialData);
-    constructor (form: HTMLFormElement)
+    constructor(data: PasswordCredentialData);
+    constructor(form: HTMLFormElement);
 }
 
 interface CredentialRequestOptions {
@@ -110,7 +108,7 @@ declare class FederatedCredential extends Credential implements CredentialUserDa
     readonly protocol: string;
     readonly name: string;
     readonly iconURL: string;
-    constructor (data: FederatedCredentialInit);
+    constructor(data: FederatedCredentialInit);
 }
 
 interface FederatedCredentialRequestOptions {
