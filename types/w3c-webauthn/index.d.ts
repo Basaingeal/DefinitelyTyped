@@ -2,6 +2,7 @@
 // Project: https://github.com/w3c/webauthn
 // Definitions by: Michael J. Currie <https://github.com/Basaingeal>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+
 // TypeScript Version: 2.7
 
 // Spec: https://w3c.github.io/webauthn/
