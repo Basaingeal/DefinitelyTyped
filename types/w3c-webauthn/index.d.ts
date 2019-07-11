@@ -16,331 +16,310 @@ interface Window {
     readonly AuthenticatorAssertionResponse: typeof AuthenticatorAssertionResponse;
     readonly PasswordCredential: typeof PasswordCredential;
     readonly FederatedCredential: typeof FederatedCredential;
-}
-
-interface Navigator {
+  }
+  
+  interface Navigator {
     readonly credentials: CredentialsContainer;
-}
-
-// **** CredMan Spec ****
-
-/**
- *  @see {@link https://w3c.github.io/webappsec-credential-management/#credential}
- */
-declare class Credential {
-    /**
-     * The credential’s identifier.
-     * The requirements for the identifier are distinct for each type of credential.
-     * It might represent a username for username/password tuples, for example.
-     */
+  }
+  
+  // **** CredMan Spec ****
+  
+  declare class Credential {
     readonly id: string;
-
-    /**
-     * Specifies the credential type represented by this object.
-     */
     readonly type: string;
-}
-
-interface CredentialUserData {
-    /**
-     * A name associated with the credential,
-     * intended as a human-understandable public name for display in a credential chooser.
-     */
+  }
+  
+  interface CredentialUserData {
     readonly name: string;
-
-    /**
-     * A URL pointing to an image for the credential,
-     * intended for display in a credential chooser.
-     * This URL MUST be an a priori authenticated URL.
-     */
     readonly iconURL: string;
-}
-
-declare class CredentialsContainer {
+  }
+  
+  declare class CredentialsContainer {
     get(options?: CredentialRequestOptions): Promise<Credential | null>;
     store(credential: Credential): Promise<Credential>;
     create(options?: CredentialCreationOptions): Promise<Credential | null>;
     preventSilentAccess(): Promise<void>;
-}
-
-interface CredentialData {
+  }
+  
+  interface CredentialData {
     id: string;
-}
-
-interface CredentialRequestOptions {
-    mediation?: CredentialMediationRequirementDTS;
+  }
+  
+  interface CredentialRequestOptions {
+    mediation?: CredentialMediationRequirement;
     signal?: AbortSignal;
-}
-
-type CredentialMediationRequirementDTS = 'silent' | 'optional' | 'required';
-
-interface CredentialCreationOptions {
+  }
+  
+  type CredentialMediationRequirement = 'silent' | 'optional' | 'required';
+  
+  interface CredentialCreationOptions {
     signal?: AbortSignal;
-}
-
-declare class PasswordCredential extends Credential implements CredentialUserData {
+  }
+  
+  declare class PasswordCredential extends Credential implements CredentialUserData {
     readonly password: string;
     readonly name: string;
     readonly iconURL: string;
     constructor(data: PasswordCredentialData);
     constructor(form: HTMLFormElement);
-}
-
-interface CredentialRequestOptions {
+  }
+  
+  interface CredentialRequestOptions {
     password?: boolean;
-}
-
-interface PasswordCredentialData extends CredentialData {
+  }
+  
+  interface PasswordCredentialData extends CredentialData {
     name?: string;
     iconURL?: string;
     origin: string;
     password: string;
-}
-
-type PasswordCredentialInit = PasswordCredentialData | HTMLFormElement;
-
-interface CredentialCreationOptions {
+  }
+  
+  type PasswordCredentialInit = PasswordCredentialData | HTMLFormElement;
+  
+  interface CredentialCreationOptions {
     password?: PasswordCredentialInit;
-}
-
-declare class FederatedCredential extends Credential implements CredentialUserData {
+  }
+  
+  declare class FederatedCredential extends Credential implements CredentialUserData {
     readonly provider: string;
     readonly protocol: string;
     readonly name: string;
     readonly iconURL: string;
     constructor(data: FederatedCredentialInit);
-}
-
-interface FederatedCredentialRequestOptions {
+  }
+  
+  interface FederatedCredentialRequestOptions {
     providers?: string[];
     protocols?: string[];
-}
-
-interface CredentialRequestOptions {
+  }
+  
+  interface CredentialRequestOptions {
     federated?: FederatedCredentialRequestOptions;
-}
-
-interface FederatedCredentialInit extends CredentialData {
+  }
+  
+  interface FederatedCredentialInit extends CredentialData {
     name?: string;
     iconURL?: string;
     origin: string;
     provider: string;
     protocol?: string;
-}
-
-interface CredentialCreationOptions {
+  }
+  
+  interface CredentialCreationOptions {
     federated?: FederatedCredentialInit;
-}
-
-// **** WebAuth Spec ****
-
-declare class PublicKeyCredential extends Credential {
+  }
+  
+  // **** WebAuth Spec ****
+  
+  declare class PublicKeyCredential extends Credential {
     readonly rawId: ArrayBuffer;
     readonly response: AuthenticatorResponse;
     getClientExtensionResults(): AuthenticationExtensionsClientOutputs;
     static isUserVerifyingPlatformAuthenticatorAvailable(): Promise<boolean>;
-}
-
-interface CredentialCreationOptions {
+  }
+  
+  interface CredentialCreationOptions {
     publicKey?: PublicKeyCredentialCreationOptions;
-}
-
-interface CredentialRequestOptions {
+  }
+  
+  interface CredentialRequestOptions {
     publicKey?: PublicKeyCredentialRequestOptions;
-}
-
-declare class AuthenticatorResponse {
+  }
+  
+  declare class AuthenticatorResponse {
     readonly clientDataJSON: ArrayBuffer;
-}
-
-declare class AuthenticatorAttestationResponse extends AuthenticatorResponse {
+  }
+  
+  declare class AuthenticatorAttestationResponse extends AuthenticatorResponse {
     readonly attestationObject: ArrayBuffer;
     getTransports(): AuthenticatorTransport[];
-}
-
-declare class AuthenticatorAssertionResponse extends AuthenticatorResponse {
+  }
+  
+  declare class AuthenticatorAssertionResponse extends AuthenticatorResponse {
     readonly authenticatorData: ArrayBuffer;
     readonly signature: ArrayBuffer;
     readonly userHandle: ArrayBuffer | null;
-}
-
-interface PublicKeyCredentialParameters {
+  }
+  
+  interface PublicKeyCredentialParameters {
     type: PublicKeyCredentialType;
     alg: COSEAlgorithmIdentifier;
-}
-
-interface PublicKeyCredentialCreationOptions {
+  }
+  
+  interface PublicKeyCredentialCreationOptions {
     rp: PublicKeyCredentialRpEntity;
     user: PublicKeyCredentialUserEntity;
-
+  
     challenge: BufferSource;
     pubKeyCredParams: PublicKeyCredentialParameters[];
-
+  
     timeout?: number;
     excludeCredentials?: PublicKeyCredentialDescriptor[];
     authenticatorSelection?: AuthenticatorSelectionCriteria;
     attestation?: AttestationConveyancePreference;
     extensions?: AuthenticationExtensionsClientInputs;
-}
-
-interface PublicKeyCredentialEntity {
+  }
+  
+  interface PublicKeyCredentialEntity {
     name: string;
     icon?: string;
-}
-
-interface PublicKeyCredentialRpEntity extends PublicKeyCredentialEntity {
+  }
+  
+  interface PublicKeyCredentialRpEntity extends PublicKeyCredentialEntity {
     id?: string;
-}
-
-interface PublicKeyCredentialUserEntity extends PublicKeyCredentialEntity {
+  }
+  
+  interface PublicKeyCredentialUserEntity extends PublicKeyCredentialEntity {
     id: BufferSource;
     displayName: string;
-}
-
-interface AuthenticatorSelectionCriteria {
+  }
+  
+  interface AuthenticatorSelectionCriteria {
     authenticatorAttachment?: AuthenticatorAttachment;
     requireResidentKey?: boolean;
     residentKey?: ResidentKeyRequirement;
     userVerification?: UserVerificationRequirement;
-}
-
-type AuthenticatorAttachment = 'platform' | 'cross-platform';
-
-type ResidentKeyRequirement = 'discouraged' | 'preferred' | 'required';
-
-type AttestationConveyancePreference = 'none' | 'indirect' | 'direct';
-
-interface PublicKeyCredentialRequestOptions {
+  }
+  
+  type AuthenticatorAttachment = 'platform' | 'cross-platform';
+  
+  type ResidentKeyRequirement = 'discouraged' | 'preferred' | 'required';
+  
+  type AttestationConveyancePreference = 'none' | 'indirect' | 'direct';
+  
+  interface PublicKeyCredentialRequestOptions {
     challenge: BufferSource;
     timeout?: number;
     rpId?: string;
     allowCredentials?: PublicKeyCredentialDescriptor[];
     userVerification?: UserVerificationRequirement;
     extensions?: AuthenticationExtensionsClientInputs;
-}
-
-type AuthenticationExtensionsAuthenticatorInputs = Record<string, string>;
-
-interface CollectedClientData {
+  }
+  
+  type AuthenticationExtensionsAuthenticatorInputs = Record<string, string>;
+  
+  interface CollectedClientData {
     type: string;
     challenge: string;
     origin: string;
     tokenBinding?: TokenBinding;
-}
-
-interface TokenBinding {
+  }
+  
+  interface TokenBinding {
     status: TokenBindingStatus;
     id?: string;
-}
-
-type TokenBindingStatus = 'present' | 'supported';
-
-type PublicKeyCredentialType = 'public-key';
-
-interface PublicKeyCredentialDescriptor {
+  }
+  
+  type TokenBindingStatus = 'present' | 'supported';
+  
+  type PublicKeyCredentialType = 'public-key';
+  
+  interface PublicKeyCredentialDescriptor {
     type: PublicKeyCredentialType;
     id: BufferSource;
     transports?: AuthenticatorTransport[];
-}
-
-type AuthenticatorTransport = 'usb' | 'nfc' | 'ble' | 'internal';
-
-type COSEAlgorithmIdentifier = number;
-
-type UserVerificationRequirement = 'required' | 'preferred' | 'discouraged';
-
-interface AuthenticationExtensionsClientInputs {
+  }
+  
+  type AuthenticatorTransport = 'usb' | 'nfc' | 'ble' | 'internal';
+  
+  type COSEAlgorithmIdentifier = number;
+  
+  type UserVerificationRequirement = 'required' | 'preferred' | 'discouraged';
+  
+  interface AuthenticationExtensionsClientInputs {
     appid?: string;
-}
-
-interface AuthenticationExtensionsClientOutputs {
+  }
+  
+  interface AuthenticationExtensionsClientOutputs {
     appid?: boolean;
-}
-
-interface AuthenticationExtensionsClientInputs {
+  }
+  
+  interface AuthenticationExtensionsClientInputs {
     txAuthSimple?: string;
-}
-
-interface AuthenticationExtensionsClientOutputs {
+  }
+  
+  interface AuthenticationExtensionsClientOutputs {
     txAuthSimple?: string;
-}
-
-interface txAuthGenericArg {
+  }
+  
+  interface txAuthGenericArg {
     contentType: string;
     content: ArrayBuffer;
-}
-
-interface AuthenticationExtensionsClientInputs {
+  }
+  
+  interface AuthenticationExtensionsClientInputs {
     txAuthGeneric?: txAuthGenericArg;
-}
-
-interface AuthenticationExtensionsClientOutputs {
+  }
+  
+  interface AuthenticationExtensionsClientOutputs {
     txAuthGeneric?: ArrayBuffer;
-}
-
-type AuthenticatorSelectionList = AAGUID[];
-
-interface AuthenticationExtensionsClientInputs {
+  }
+  
+  type AuthenticatorSelectionList = AAGUID[];
+  
+  interface AuthenticationExtensionsClientInputs {
     authnSel?: AuthenticatorSelectionList;
-}
-
-type AAGUID = BufferSource;
-
-interface AuthenticationExtensionsClientOutputs {
+  }
+  
+  type AAGUID = BufferSource;
+  
+  interface AuthenticationExtensionsClientOutputs {
     authnSel?: boolean;
-}
-
-interface AuthenticationExtensionsClientInputs {
+  }
+  
+  interface AuthenticationExtensionsClientInputs {
     exts?: boolean;
-}
-
-type AuthenticationExtensionsSupported = string[];
-
-interface AuthenticationExtensionsClientOutputs {
+  }
+  
+  type AuthenticationExtensionsSupported = string[];
+  
+  interface AuthenticationExtensionsClientOutputs {
     exts?: AuthenticationExtensionsSupported;
-}
-
-interface AuthenticationExtensionsClientInputs {
+  }
+  
+  interface AuthenticationExtensionsClientInputs {
     uvi?: boolean;
-}
-
-interface AuthenticationExtensionsClientOutputs {
+  }
+  
+  interface AuthenticationExtensionsClientOutputs {
     uvi?: ArrayBuffer;
-}
-
-interface AuthenticationExtensionsClientInputs {
+  }
+  
+  interface AuthenticationExtensionsClientInputs {
     loc?: boolean;
-}
-
-interface AuthenticationExtensionsClientOutputs {
+  }
+  
+  interface AuthenticationExtensionsClientOutputs {
     loc?: Coordinates;
-}
-
-interface AuthenticationExtensionsClientInputs {
+  }
+  
+  interface AuthenticationExtensionsClientInputs {
     uvm?: boolean;
-}
-
-type UvmEntry = number;
-
-type UvmEntries = UvmEntry[];
-
-interface AuthenticationExtensionsClientOutputs {
+  }
+  
+  type UvmEntry = number;
+  
+  type UvmEntries = UvmEntry[];
+  
+  interface AuthenticationExtensionsClientOutputs {
     uvm?: UvmEntries;
-}
-
-interface authenticatorBiometricPerfBounds {
+  }
+  
+  interface authenticatorBiometricPerfBounds {
     FAR?: number;
     FRR?: number;
-}
-
-interface AuthenticationExtensionsClientInputs {
+  }
+  
+  interface AuthenticationExtensionsClientInputs {
     credProps?: boolean;
-}
-
-interface CredentialPropertiesOutput {
+  }
+  
+  interface CredentialPropertiesOutput {
     rk?: boolean;
-}
-
-interface AuthenticationExtensionsClientOutputs {
+  }
+  
+  interface AuthenticationExtensionsClientOutputs {
     credProps?: CredentialPropertiesOutput;
-}
+  }
+  
