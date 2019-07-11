@@ -35,10 +35,10 @@ interface Window {
   }
 
   declare class CredentialsContainer {
-        get(options?: CredentialRequestOptions): Promise<Credential | null>;
-        store(credential: Credential): Promise<Credential>;
-        create(options?: CredentialCreationOptions): Promise<Credential | null>;
-        preventSilentAccess(): Promise<void>;
+      get(options?: CredentialRequestOptions): Promise<Credential | null>;
+      store(credential: Credential): Promise<Credential>;
+      create(options?: CredentialCreationOptions): Promise<Credential | null>;
+      preventSilentAccess(): Promise<void>;
   }
 
   interface CredentialData {
@@ -82,11 +82,11 @@ interface Window {
   }
 
   declare class FederatedCredential extends Credential implements CredentialUserData {
-        readonly provider: string;
-        readonly protocol: string;
-        readonly name: string;
-        readonly iconURL: string;
-        constructor(data: FederatedCredentialInit);
+      readonly provider: string;
+      readonly protocol: string;
+      readonly name: string;
+      readonly iconURL: string;
+      constructor(data: FederatedCredentialInit);
   }
 
   interface FederatedCredentialRequestOptions {
@@ -113,10 +113,10 @@ interface Window {
   // **** WebAuth Spec ****
 
   declare class PublicKeyCredential extends Credential {
-        readonly rawId: ArrayBuffer;
-        readonly response: AuthenticatorResponse;
-        getClientExtensionResults(): AuthenticationExtensionsClientOutputs;
-        static isUserVerifyingPlatformAuthenticatorAvailable(): Promise<boolean>;
+      readonly rawId: ArrayBuffer;
+      readonly response: AuthenticatorResponse;
+      getClientExtensionResults(): AuthenticationExtensionsClientOutputs;
+      static isUserVerifyingPlatformAuthenticatorAvailable(): Promise<boolean>;
   }
 
   interface CredentialCreationOptions {
