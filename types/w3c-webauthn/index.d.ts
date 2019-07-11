@@ -24,7 +24,7 @@ interface Window {
 
   // **** CredMan Spec ****
 
-  declare class Credential {
+  declare abstract class Credential {
       readonly id: string;
       readonly type: string;
   }
